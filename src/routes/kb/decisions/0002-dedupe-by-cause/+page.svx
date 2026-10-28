@@ -1,0 +1,26 @@
+---
+layout: runbook
+title: '0002 · Duplicates share a cause, not a subject'
+owner: support desk
+status: proposed
+reviewed: 2026-10-28
+---
+
+**Date:** 28 October 2026 · **Replaces:** [0001](/kb/decisions/0001-dedupe-by-subject) once accepted
+
+## Context
+
+Decision 0001 merges reports whose subject lines match. In #4471 that put three problems with
+the same symptom into one ticket marked known ([the split](/kb/incidents/4471/split)). Subjects
+describe the symptom; engineering needs one ticket per cause.
+
+## Decision
+
+Merge on subject during an incident, as now. Before a ticket is marked known, group it by cause
+(`causes.ts`, plus what the desk read in each report) and split off every cause that is not the
+ticket's own.
+
+## Consequences
+
+- Marking a big ticket known takes one extra pass, run by the kb, not by hand.
+- A fix closes only the reports it causes; the rest stay visible.

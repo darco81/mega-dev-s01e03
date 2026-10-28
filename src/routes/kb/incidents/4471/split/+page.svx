@@ -1,0 +1,58 @@
+---
+layout: runbook
+title: '#4471 split · three problems, not one'
+owner: support desk
+status: living
+reviewed: 2026-10-28
+signature: v1.eyJzdWIiOiI2ODY1IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMyMDM3NTgsImV4cCI6MTc5MzI5MDE1OH0.QkgmosUrHC3OzdLQUqqE80tZwyDmi5TUry1EtB6zA1o
+---
+
+<script>
+  import SplitTable from '#lib/kb/SplitTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const repo = 'darco81/mega-dev-s01e03';
+  const tickets = { parser: 1, hint: 2, shift: 3 };
+  const what = {
+    parser: 'the shared parser reads every date month first; day-first tenants get day and month swapped',
+    hint: 'booking-v3 prints MM/DD/YYYY under its date field; people type month first, the form reads it day first',
+    shift: 'the date moves by one day (same month), not day for month: a time-zone conversion',
+  };
+</script>
+
+[#4471](/kb/incidents/4471) was merged as one issue because its reports share subject lines
+([decision 0001](/kb/decisions/0001-dedupe-by-subject)). Read by cause, it holds three problems.
+Each now has its own ticket, and every report in #4471 is counted once, under one of them.
+
+<Callout kind="warn">
+Fixing the parser will not close #4471. The other two problems keep the same symptom, a booking
+on the wrong day, and need their own fixes.
+</Callout>
+
+## The split
+
+<SplitTable ticket={4471} {repo} {tickets} {what} />
+
+## How a report is placed
+
+1. Count each report once, by `id`: the export repeats some rows across pages.
+2. A report the desk read as a one-day move ([desk notes](/kb/incidents/4471)) is `shift`, whatever its tenant.
+3. Otherwise its cause comes from its tenant, not from intake's tag
+   (`causes.ts`): a booking-v3 tenant through the form is `hint`; any other day-first tenant is `parser`.
+
+Intake's tag is a guess from the reporter's browser. Do not split by it: it disagrees with the
+cause for many reports in #4471.
+
+## What each ticket needs
+
+- `parser`: read dates in the tenant's own order (`Intl` for their locale), never month first.
+- `hint`: booking-v3 must print the hint in the tenant's order, or read what it prints.
+- `shift`: store and send the booking's date in the tenant's time zone; check invites across zones and around clock changes.
+
+## For the desk
+
+Merging on subject alone put three problems into one ticket. Before marking a big ticket known,
+group it by cause, not by subject.
+
+<RenderStamp {signature} />

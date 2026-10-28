@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../_app/immutable/entry/start.is3--pYF.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/WgfOfNfE.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/CzN7zag7.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/CZomEjWq.js" rel="modulepreload">
+		<link href="../../_app/immutable/entry/app.B1KNQ4Z9.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/DZni_WYU.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/BMv-2JeR.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/DQhTBKxc.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/DL3LuOT-.js" rel="modulepreload">
+		<link href="../../_app/immutable/nodes/0.Dqsao82p.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/BRmqMdvF.js" rel="modulepreload">
+		<link href="../../_app/immutable/nodes/4.FupEoTpL.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/BLBxubb6.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/CCdwa9zY.js" rel="modulepreload">
+		<!--e2jw2j--><!----><title>0002 · Duplicates share a cause, not a subject · support kb</title>
+		<link href="../../_app/immutable/assets/runbook.BhhgOc_n.css" rel="stylesheet">
+  </head>
+  <body>
+    <div style="display: contents"><!--[--><!--[0--><!--[--><!--[--><div class="kb svelte-e2jw2j"><header><a class="crumb svelte-e2jw2j" href="/kb">support desk · kb</a> <h1 class="svelte-e2jw2j">0002 · Duplicates share a cause, not a subject</h1> <p class="meta svelte-e2jw2j"><span>owner <b>support desk</b></span> <span class="status proposed svelte-e2jw2j">proposed</span> <span class="svelte-e2jw2j">reviewed 2026-10-28 · 0 days ago</span></p></header> <!--[-1--><!--]--> <main><p><strong>Date:</strong> 28 October 2026 · <strong>Replaces:</strong> <a href="/kb/decisions/0001-dedupe-by-subject">0001</a> once accepted</p> <h2>Context</h2> <p>Decision 0001 merges reports whose subject lines match. In #4471 that put three problems with
+the same symptom into one ticket marked known (<a href="/kb/incidents/4471/split">the split</a>). Subjects
+describe the symptom; engineering needs one ticket per cause.</p> <h2>Decision</h2> <p>Merge on subject during an incident, as now. Before a ticket is marked known, group it by cause
+(<code>causes.ts</code>, plus what the desk read in each report) and split off every cause that is not the
+ticket’s own.</p> <h2>Consequences</h2> <ul><li>Marking a big ticket known takes one extra pass, run by the kb, not by hand.</li> <li>A fix closes only the reports it causes; the rest stay visible.</li></ul><!----></main> <footer class="svelte-e2jw2j">Pages are written by people. Tables and charts are built from data at render time.</footer></div><!--]--><!----><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_19rx4k2 = {
+						base: new URL("../..", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../_app/immutable/entry/start.is3--pYF.js"),
+						import("../../_app/immutable/entry/app.B1KNQ4Z9.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 4],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>
