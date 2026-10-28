@@ -42,8 +42,8 @@ time zones. Reports of a booking one day off are still open, in their own ticket
 2. Its cause comes from its tenant (`causes.ts`), not from intake's tag, which is a guess from
    the reporter's browser: a booking-v3 tenant through the form is `hint`; any other day-first
    tenant is `parser`.
-3. A report the desk read as a one-day move (`desk-notes.json`) is also `shift`. The desk files
-   it under its tenant's cause, so the counts above overlap by those reports.
+3. A report the desk read as a one-day move (`desk-notes.json`) is `shift`, whatever its
+   tenant. Before this change the kb counted those under `parser` too (379 instead of 374).
 
 ## What is left
 

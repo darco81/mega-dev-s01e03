@@ -17,8 +17,10 @@ export type Report = {
 
 export type Tenant = { handle: string; name: string; locale: string; form: 'booking-v2' | 'booking-v3' };
 
-export type Cause = 'parser' | 'hint';
-export const CAUSES: readonly Cause[] = ['parser', 'hint'];
+// `shift` is read from the report, not from the tenant: the date moved by one day, not day for month
+// (desk-notes.json). It is its own bug, so it is its own cause.
+export type Cause = 'parser' | 'hint' | 'shift';
+export const CAUSES: readonly Cause[] = ['parser', 'hint', 'shift'];
 
 // What each booking form prints under its date field.
 const DATE_HINT: Record<Tenant['form'], string> = {
@@ -63,10 +65,14 @@ export type CauseGroup = {
   mergedInto: number[];
 };
 
-export function groupByCause(reports: Report[], tenantOf: (r: Report) => Tenant | undefined): CauseGroup[] {
+export function groupByCause(
+  reports: Report[],
+  tenantOf: (r: Report) => Tenant | undefined,
+  oneDayMove: readonly string[] = [],
+): CauseGroup[] {
   const byCause = new Map<CauseGroup['cause'], Report[]>();
   for (const r of reports) {
-    const cause = causeOf(r, tenantOf(r)) ?? 'unplaced';
+    const cause = oneDayMove.includes(r.id) ? 'shift' : (causeOf(r, tenantOf(r)) ?? 'unplaced');
     byCause.set(cause, [...(byCause.get(cause) ?? []), r]);
   }
   return [...byCause.entries()]
@@ -90,8 +96,3 @@ export function ticketCause(groups: CauseGroup[], ticket: number): CauseGroup['c
   return groups.find((g) => g.mergedInto.includes(ticket))?.cause ?? null;
 }
 
-// Reports the desk read differently from their cause (desk-notes.json): counted where they're filed,
-// footnoted under it.
-export function readAs(g: CauseGroup, ids: readonly string[]): number {
-  return g.reports.filter((r) => ids.includes(r.id)).length;
-}

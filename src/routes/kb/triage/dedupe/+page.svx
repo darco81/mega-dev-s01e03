@@ -32,6 +32,12 @@ anything else.
 
 <DedupeExplorer />
 
+## Before you mark a ticket known
+
+Group it by cause, not by subject ([proposed decision 0002](/kb/decisions/0002-dedupe-by-cause)).
+#4471 matched on subject and held three bugs.
+
 ## When you are unsure
 
-Merge. Splitting a ticket later is cheaper than two engineers chasing the same bug.
+Merge. Splitting a ticket later is cheaper than two engineers chasing the same bug, as long as
+somebody does split it.

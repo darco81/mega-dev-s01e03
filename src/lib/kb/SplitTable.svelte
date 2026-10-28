@@ -1,18 +1,18 @@
 <script lang="ts">
   import reports from '#lib/data/reports-4471.json';
   import notes from '#lib/data/desk-notes.json';
-  import { groupByCause, readAs, uniqueById, type Report } from '#lib/kb/causes';
+  import { groupByCause, uniqueById, type Report } from '#lib/kb/causes';
   import { tenantOf } from '#lib/kb/locales';
 
-  // The desk's own view (causes.ts, as exported), plus the one-day moves it footnotes (desk-notes.json).
+  // The desk's view (causes.ts): parser, hint and the one-day moves (desk-notes.json), each counted once.
   type Row = { problem: string; what: string; ticket: number; status: string };
   let { ticket, repo, rows }: { ticket: number; repo: string; rows: Row[] } = $props();
 
   const merged = $derived(uniqueById(reports as Report[]).filter((r) => r.mergedInto === ticket));
-  const groups = $derived(groupByCause(merged, tenantOf));
-  const shift = $derived(merged.filter((r) => notes.oneDayMove.includes(r.id)));
-  const count = (p: string) => (p === 'shift' ? shift.length : (groups.find((g) => g.cause === p)?.reports.length ?? 0));
-  const inside = (p: string) => (p === 'shift' ? groups.filter((g) => readAs(g, notes.oneDayMove)).map((g) => g.cause) : []);
+  const groups = $derived(groupByCause(merged, tenantOf, notes.oneDayMove));
+  const shift = $derived(groups.find((g) => g.cause === 'shift')?.reports ?? []);
+  const count = (p: string) => groups.find((g) => g.cause === p)?.reports.length ?? 0;
+  const placed = $derived(groups.reduce((n, g) => n + g.reports.length, 0));
 </script>
 
 <p class="sum">
@@ -35,8 +35,7 @@
 </table>
 
 <p class="ids">
-  <code>shift</code>: {shift.map((r) => r.id).join(', ')}. The desk counts these {shift.length} under
-  {#each inside('shift') as c (c)}<code>{c}</code>{/each} by tenant, so they are inside that number too.
+  <code>shift</code>: {shift.map((r) => r.id).join(', ')} · {placed === merged.length ? 'every report counted once' : `${merged.length - placed} not placed`}
 </p>
 
 <style>
